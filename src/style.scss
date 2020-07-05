@@ -1,0 +1,47 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  min-height: 100vh;
+  min-width: 100vw;
+}
+.main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #000;
+
+  .game {
+    height: 100%;
+    width: auto;
+    padding-top: 0;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media (max-aspect-ratio: 1280/720) {
+      width: 100%;
+      height: auto;
+      padding-top: calc((720 / 1280) * 100%);
+      padding-left: 0;
+    }
+
+    canvas {
+      position: absolute;
+
+      width: auto;
+      height: 100%;
+
+      @media (max-aspect-ratio: 1280/720) {
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
+    }
+  }
+}
