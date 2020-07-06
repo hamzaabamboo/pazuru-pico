@@ -21,12 +21,14 @@ import hagumi from "./assets/chara/hagumi.png";
 import kanon from "./assets/chara/kanon.png";
 import kaoru from "./assets/chara/kaoru.png";
 import michelle from "./assets/chara/michelle.png";
+import michelleSmall from "./assets/chara/michelle_small.png";
 // import himari from "./assets/chara/himari.png";
 
 export interface CharacterData {
   name: string;
   file: string;
   group: string;
+  preview?: string;
 }
 export const characterData: CharacterData[] = [
   {
@@ -123,6 +125,7 @@ export const characterData: CharacterData[] = [
     name: "Michelle",
     file: michelle,
     group: "Hello ! Happy World",
+    preview: michelleSmall,
   },
   {
     name: "Kaoru",

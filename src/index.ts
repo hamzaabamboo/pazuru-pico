@@ -10,10 +10,12 @@ import {
   showNextPiece,
   nextCharacter,
   initRNG,
+  fly,
 } from "./piece";
 import { COLUMNS, ROWS } from "./config";
 import { getCoordinates } from "./utils";
 import { findClearPieces } from "./clear";
+import { createMarinaSan, marinaTextures } from "./marina";
 // The application will create a renderer using WebGL, if possible,
 // with a fallback to a canvas render. It will also setup the ticker
 // and the root stage PIXI.Container
@@ -50,7 +52,6 @@ const clearChunk = (chunk: [number, number][]) => {
       chunk.find((e) => sprite.coordinates?.[0].join(",") === e.join(","))
     );
   });
-  console.log(chunk, toRemove);
   toRemove.forEach((sp) => {
     sp.coordinates?.forEach(([x, y]) => {
       pieces[y][x] = null;
@@ -142,13 +143,16 @@ const create = async () => {
             break;
         }
       }
-
-      state = create;
-      let chunk = findClearPieces(pieces);
-      while (chunk !== undefined) {
-        clearChunk(chunk);
-        chunk = findClearPieces(pieces);
-      }
+      marina.play();
+      fly(nextPiece, () => {
+        marina.gotoAndStop(0);
+        state = create;
+        let chunk = findClearPieces(pieces);
+        while (chunk !== undefined) {
+          clearChunk(chunk);
+          chunk = findClearPieces(pieces);
+        }
+      });
     }
   });
 
@@ -156,7 +160,9 @@ const create = async () => {
     if (nextPiece) {
       app.stage.removeChild(nextPiece);
     }
-    nextPiece = await showNextPiece(nextCharacter.file);
+    nextPiece = await showNextPiece(
+      nextCharacter.preview ?? nextCharacter.file,
+    );
   }
 
   sprites.push({ sprite: piece });
@@ -165,12 +171,18 @@ const create = async () => {
 const falling = () => {};
 
 let state: (delta: number) => void = start;
-
+let marina: PIXI.AnimatedSprite;
 // load the texture we need
-characterData.forEach((character) => app.loader.add(character.file));
+characterData.forEach((character) => {
+  app.loader.add(character.file);
+  if (character.preview) {
+    app.loader.add(character.preview);
+  }
+});
+marinaTextures.forEach((t) => app.loader.add(t));
+app.stage.sortableChildren = true;
 app.loader.add("move", move);
 app.loader.add("land", land);
-
 app.loader.add("background", bg).load((loader, resources) => {
   // This creates a texture from a 'bunny.png' image
   const bg = new PIXI.Sprite(resources.background?.texture);
@@ -181,6 +193,7 @@ app.loader.add("background", bg).load((loader, resources) => {
   // Add the bunny to the scene we are building
 
   app.stage.addChild(bg);
+  marina = createMarinaSan();
 
   window.addEventListener("keydown", (event) => {
     if (event.key === "r") {

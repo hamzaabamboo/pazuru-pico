@@ -7,5 +7,8 @@ export const SPEED = 2;
 
 export const OFFSET_BOTTOM = 26;
 
-export const NEXT_CHARACTER_X = 1475;
-export const NEXT_CHARACTER_Y = 215;
+export const NEXT_CHARACTER_X = 1540;
+export const NEXT_CHARACTER_Y = 480;
+
+export const MARINA_X = 1466;
+export const MARINA_Y = 175;

@@ -14,16 +14,28 @@ import {
 import {
   getCoordinates,
   willCollide,
-  getMichelleCoordinates,
   getStackHeight,
   getOffset,
-  getMichelleStackHeight,
 } from "./utils";
 import { characterData, CharacterData } from "./character-data";
 import { createMichelle } from "./michelle";
 
 export let nextCharacter: CharacterData | undefined;
 let characterList = [...characterData];
+
+export const fly = (
+  sprite: PIXI.Sprite,
+  onExit: (sprite: PIXI.Sprite) => void,
+) => {
+  const handleFly = () => {
+    sprite.y -= 25 * SPEED;
+    if (sprite.y + 2 * BOX_SIZE < 0) {
+      gameTicker.remove(handleFly);
+      onExit(sprite);
+    }
+  };
+  gameTicker.add(handleFly);
+};
 export const initRNG = () => {
   nextCharacter = undefined;
   characterList = [...characterData];
@@ -55,6 +67,9 @@ export const showNextPiece = async (file: string) => {
     }));
 
   const kasumi = new PIXI.Sprite(texture);
+  kasumi.anchor.x = 0.5;
+  kasumi.anchor.y = 1;
+
   kasumi.y = NEXT_CHARACTER_Y;
   kasumi.x = NEXT_CHARACTER_X;
 
