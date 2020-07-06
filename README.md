@@ -1,10 +1,10 @@
 # Puzzle \* Pico
 
-Puyo-puyo-ish game inspired from [BanG Dream! Girls Band Party!☆PICO ～ OHMORI ～ Episode 9](https://www.youtube.com/watch?v=q5YETLAebUY). The game is created with the help of PIXI.js and TypeScript
+Puyo-puyo-ish game inspired from [BanG Dream! Girls Band Party!☆PICO ～ OHMORI ～ Episode 9](https://www.youtube.com/watch?v=q5YETLAebUY). Created with PixiJS and TypeScript
 
 ## How To Play ?
 
-Match members of same group to clear the line. Don't let the board fills up because Marina-san will come for you !
+Match members of same group to clear the line. Don't let the board fill up because Marina-san will come for you !
 
 ### Controls
 
@@ -13,6 +13,7 @@ Match members of same group to clear the line. Don't let the board fills up beca
 - **Control** : Rotate Counter Clockwise
 - **Arrow Down** : Soft Drop (a.k.a drop faster)
 - **Space bar** : Hard Drop (a.k.a drop quickly)
+- **r** : Reset
 
 ## Development
 
