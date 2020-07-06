@@ -1,7 +1,12 @@
+* {
+  box-sizing: border-box;
+}
 html,
 body {
   margin: 0;
   padding: 0;
+
+  font-family: sans-serif;
 
   min-height: 100vh;
   min-width: 100vw;
@@ -23,6 +28,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999;
 
     @media (max-aspect-ratio: 1280/720) {
       width: 100%;
@@ -43,5 +49,21 @@ body {
         width: 100%;
       }
     }
+  }
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  color: white;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+
+  a,
+  a:visited,
+  a:active {
+    color: lightblue;
+    text-decoration: none;
   }
 }

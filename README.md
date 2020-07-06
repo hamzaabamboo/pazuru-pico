@@ -1,58 +1,40 @@
-# parcel-typescript-example
+# Puzzle \* Pico
 
-A minimum TypeScript app with [Parcel Bundler](https://parceljs.org/).
+Puyo-puyo-ish game inspired from [BanG Dream! Girls Band Party!☆PICO ～ OHMORI ～ Episode 9](https://www.youtube.com/watch?v=q5YETLAebUY). The game is created with the help of PIXI.js and TypeScript
 
-## Source code
+## How To Play ?
 
-- [index.html](./src/index.html)
-- [index.ts](./src/index.ts)
-- [style.css](./src/style.css)
+Match members of same group to clear the line. Don't let the board fills up because Marina-san will come for you !
 
-For more details, see [src/](./src/).
+### Controls
 
-## Usage
+- **Arrow Left/ Arrow Right** : Go Left and Right
+- **Arrow Up** : Rotate Clockwise
+- **Control** : Rotate Counter Clockwise
+- **Arrow Down** : Soft Drop (a.k.a drop faster)
+- **Space bar** : Hard Drop (a.k.a drop quickly)
 
-### Installation
+## Development
 
-    yarn install
+Install `yarn install`
+Serve `yarn start`
 
-### Development
+## Features
 
-Launch development server.
+- [x] Basic Gameplay
+- [x] Michelle
+- [ ] Choco Coronet, Coffee & Coroquette
+- [ ] Scoring system
+- [ ] Combos
+- [ ] Rimi-rin cutin
+- [ ] More sounds
+- [ ] Welcome screen
+- [ ] Moving Logo
 
-    yarn start
-    
-### Build
+## Contribution
 
-Compile TypeScript app and copy index.html to the `dist` folder.
+Feel free to contribute or contact me ! (日本語も OK)
 
-    yarn run build
+## Disclaimer
 
-### Deploy
-
-Deploy `dist` folder to GitHub Pages.
-
-    yarn run deploy
-
-You can see the result in <https://azu.github.io/parcel-typescript-example/>.
-
-## Contributing
-
-Pull requests and stars are always welcome.
-
-For bugs and feature requests, [please create an issue](https://github.com/azu/parcel-typescript-example/issues).
-
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
-
-## Author
-
-- [github/azu](https://github.com/azu)
-- [twitter/azu_re](https://twitter.com/azu_re)
-
-## License
-
-MIT © azu
+This project aims serves as my fun side project for creating a game and as a fan-made game. I do not own any assets/ sounds for this project. All the assets are copyrighted by Bushiroad. The assets are screen captured from [BanG Dream! Girls Band Party!☆PICO ～ OHMORI ～ Episode 9](https://www.youtube.com/watch?v=q5YETLAebUY)

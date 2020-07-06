@@ -12,3 +12,6 @@ export const NEXT_CHARACTER_Y = 480;
 
 export const MARINA_X = 1466;
 export const MARINA_Y = 175;
+
+export const FALL_DELAY = 10;
+export const FALL_SPEED = 8 * SPEED;

@@ -18,8 +18,7 @@
     "start": "parcel serve -p 5678 src/index.html",
     "build": "cross-env NODE_ENV=production parcel build src/index.html --public-url .",
     "watch": "parcel watch src/index.html",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "predeploy": "npm run build"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",

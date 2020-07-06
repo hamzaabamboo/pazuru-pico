@@ -22,7 +22,12 @@ import kanon from "./assets/chara/kanon.png";
 import kaoru from "./assets/chara/kaoru.png";
 import michelle from "./assets/chara/michelle.png";
 import michelleSmall from "./assets/chara/michelle_small.png";
-// import himari from "./assets/chara/himari.png";
+
+import ran from "./assets/chara/ran.png";
+import tsugumi from "./assets/chara/tsugumi.png";
+import moga from "./assets/chara/moga.png";
+import himari from "./assets/chara/himari.png";
+import tomoe from "./assets/chara/tomoe.png";
 
 export interface CharacterData {
   name: string;
@@ -131,5 +136,30 @@ export const characterData: CharacterData[] = [
     name: "Kaoru",
     file: kaoru,
     group: "Hello ! Happy World",
+  },
+  {
+    name: "Ran",
+    file: ran,
+    group: "Afterglow",
+  },
+  {
+    name: "Tomoe",
+    file: tomoe,
+    group: "Afterglow",
+  },
+  {
+    name: "Tsugumi",
+    file: tsugumi,
+    group: "Afterglow",
+  },
+  {
+    name: "Moga",
+    file: moga,
+    group: "Afterglow",
+  },
+  {
+    name: "Himari",
+    file: himari,
+    group: "Afterglow",
   },
 ];

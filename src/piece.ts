@@ -10,6 +10,8 @@ import {
   NEXT_CHARACTER_Y,
   NEXT_CHARACTER_X,
   OFFSET_BOTTOM,
+  FALL_DELAY,
+  FALL_SPEED,
 } from "./config";
 import {
   getCoordinates,
@@ -35,6 +37,45 @@ export const fly = (
     }
   };
   gameTicker.add(handleFly);
+};
+export const fall = (
+  sprite: PIXI.Sprite,
+  onFall?: (sprite: PIXI.Sprite) => void,
+) => {
+  let timer: number;
+  const cleanup = () => {
+    gameTicker.remove(checkOffset);
+    onFall && onFall(sprite);
+  };
+
+  const checkOffset = () => {
+    // each frame we spin the bunny around a bit
+    const offset = getOffset(sprite);
+    const stackHeight = getStackHeight(sprite);
+    const dropHeight =
+      app.renderer.height -
+      (BOX_SIZE / 2 + OFFSET_BOTTOM) -
+      BOX_SIZE * stackHeight -
+      (offset === 2 ? BOX_SIZE : 0);
+    if (sprite.y < dropHeight) {
+      sprite.y += FALL_SPEED;
+      if (timer) clearTimeout(timer);
+    } else {
+      if (!timer) {
+        timer = setTimeout(() => {
+          sprite.y =
+            app.renderer.height -
+            (BOX_SIZE / 2 + OFFSET_BOTTOM) -
+            (offset === 2 ? BOX_SIZE : 0) -
+            BOX_SIZE * stackHeight;
+          cleanup();
+        }, FALL_DELAY);
+      }
+    }
+  };
+
+  // Listen for frame updates
+  gameTicker.add(checkOffset);
 };
 export const initRNG = () => {
   nextCharacter = undefined;
@@ -189,8 +230,9 @@ export const createPiece = async (
     const dropHeight =
       app.renderer.height -
       (BOX_SIZE / 2 + OFFSET_BOTTOM) -
-      BOX_SIZE * stackHeight;
-    if (kasumi.y + (offset === 2 ? BOX_SIZE : 0) < dropHeight) {
+      BOX_SIZE * stackHeight -
+      (offset === 2 ? BOX_SIZE : 0);
+    if (kasumi.y < dropHeight) {
       kasumi.y += speed;
     } else {
       if (!dropped) {

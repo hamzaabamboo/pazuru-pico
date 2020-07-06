@@ -11,14 +11,13 @@ export const getCoordinates = (
   };
 };
 
-export const getMichelleCoordinates = (
+export const moveToCoordinate = (
   sprite: PIXI.Sprite,
-  method: "floor" | "ceil" | "round" = "ceil",
-): { x: number; y: number } => {
-  return {
-    x: Math[method]((sprite.x - BOX_SIZE - LEFT_BORDER) / BOX_SIZE),
-    y: Math[method]((sprite.y - BOX_SIZE) / BOX_SIZE),
-  };
+  x: number,
+  y: number,
+): void => {
+  sprite.x = BOX_SIZE * x + LEFT_BORDER + BOX_SIZE / 2;
+  sprite.y = BOX_SIZE * y;
 };
 
 export const willCollide = (
@@ -69,7 +68,7 @@ export const getOffset = (sprite: PIXI.Sprite) => {
   return (Math.fround(sprite.rotation / Math.PI) * 2 + 2) % 4;
 };
 export const getStackHeight = (sprite: PIXI.Sprite) => {
-  const { x, y } = getCoordinates(sprite);
+  const { x, y } = getCoordinates(sprite, "floor");
   const offset = getOffset(sprite);
   return offset % 2 === 0
     ? pieces
@@ -84,14 +83,4 @@ export const getStackHeight = (sprite: PIXI.Sprite) => {
         .filter((_, index) => index > y)
         .reverse()
         .reduce((acc, row, index) => (row[0] || row[1] ? index + 1 : acc), 0);
-};
-
-export const getMichelleStackHeight = (sprite: PIXI.Sprite) => {
-  const { x, y } = getCoordinates(sprite);
-  // console.log(x);
-  return pieces
-    .map((row) => [row[x - 1], row[x]])
-    .filter((_, index) => index + 1 > y)
-    .reverse()
-    .reduce((acc, row, index) => (row[0] || row[1] ? index + 1 : acc), 0);
 };
