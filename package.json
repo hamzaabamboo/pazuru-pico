@@ -16,7 +16,7 @@
   "main": "lib/parcel-typescript-example.js",
   "scripts": {
     "start": "parcel serve -p 5678 src/index.html",
-    "build": "cross-env NODE_ENV=production parcel build src/index.html --public-url ./pazuru-pico",
+    "build": "cross-env NODE_ENV=production parcel build src/index.html --public-url ./",
     "watch": "parcel watch src/index.html",
     "predeploy": "npm run build"
   },
