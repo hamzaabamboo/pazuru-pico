@@ -1,18 +1,6 @@
 import { ROWS, COLUMNS } from "./config";
 import { characterData } from "./character-data";
 
-const __test = [
-  [null, null, "Yukina", null, null, null],
-  [null, null, "Yukina", null, null, null],
-  ["Himari", "Tae", "Arisa", "Arisa", "Yukina", "Risa"],
-  ["Himari", "Tae", "Arisa", "Arisa", "Yukina", "Risa"],
-  ["Tae", "Tae", "Kasumi", "Tae", "Risa", "Risa"],
-  ["Tae", "Tae", "Kasumi", "Tae", "Risa", "Risa"],
-  ["Kasumi", "Arisa", "Tae", "Tae", "Yukina", "Risa"],
-  ["Kasumi", "Arisa", "Tae", "Tae", "Yukina", "Risa"],
-];
-const pieces = __test;
-
 const groupMap = Object.fromEntries(
   characterData.map((e) => [e.name, e.group]),
 );

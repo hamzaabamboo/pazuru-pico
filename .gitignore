@@ -4,6 +4,9 @@
 logs
 *.log
 
+**/psd
+**/old
+**.mkv
 # Runtime data
 pids
 *.pid

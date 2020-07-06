@@ -21,8 +21,8 @@ import { findClearPieces } from "./clear";
 const { Application, Sprite, Loader } = PIXI;
 
 export const app = new Application({
-  width: 1280,
-  height: 720,
+  width: 1920,
+  height: 1080,
 });
 
 // The application will create a canvas element for you that you
@@ -47,25 +47,24 @@ const clearChunk = (chunk: [number, number][]) => {
   const toRemove = sprites.filter((sprite) => {
     return (
       sprite.coordinates &&
-      chunk.find((e) =>
-        sprite.coordinates?.sort().find((s) => e.join(",") === s.join(",")),
-      )
+      chunk.find((e) => sprite.coordinates?.[0].join(",") === e.join(","))
     );
   });
+  console.log(chunk, toRemove);
   toRemove.forEach((sp) => {
     sp.coordinates?.forEach(([x, y]) => {
-      console.log(x, y);
       pieces[y][x] = null;
     });
     app.stage.removeChild(sp.sprite);
+    sprites = sprites.filter((s) => s.sprite !== sp.sprite);
   });
-  console.log(pieces.map((e) => e.map((e) => e ?? ".").join(" ")).join("\n"));
 };
 
 const start = () => {
   sprites.forEach((sp) => {
     app.stage.removeChild(sp.sprite);
   });
+  sprites = [];
   gameTicker.destroy();
   gameTicker = new PIXI.Ticker();
   pieces = Array(ROWS)
@@ -87,42 +86,61 @@ const create = async () => {
   const piece = await createPiece(character.file, (sprite) => {
     const { x, y } = getCoordinates(sprite);
     const orientation = (Math.fround(sprite.rotation / Math.PI) * 2 + 2) % 4;
+    // console.log(
+    //   x,
+    //   y,
+    //   pieces.map((e) => e.map((e) => e ?? ".").join(" ")).join("\n"),
+    // );
+    const isMichelle = character.name === "Michelle";
     if (y < 0 || (orientation === 0 && y <= 0)) {
       state = end;
     } else {
-      switch (orientation) {
-        case 0:
-          pieces[y][x] = character.name;
-          pieces[y - 1][x] = character.name;
-          sprites[index].coordinates = [
-            [x, y],
-            [x, y - 1],
-          ];
-          break;
-        case 1:
-          pieces[y][x] = character.name;
-          pieces[y][x + 1] = character.name;
-          sprites[index].coordinates = [
-            [x, y],
-            [x + 1, y],
-          ];
-          break;
-        case 2:
-          pieces[y][x] = character.name;
-          pieces[y + 1][x] = character.name;
-          sprites[index].coordinates = [
-            [x, y],
-            [x, y + 1],
-          ];
-          break;
-        case 3:
-          pieces[y][x] = character.name;
-          pieces[y][x - 1] = character.name;
-          sprites[index].coordinates = [
-            [x, y],
-            [x - 1, y],
-          ];
-          break;
+      if (isMichelle) {
+        pieces[y - 1][x] = character.name;
+        pieces[y - 1][x - 1] = character.name;
+        pieces[y][x] = character.name;
+        pieces[y][x - 1] = character.name;
+        sprites[index].coordinates = [
+          [x, y],
+          [x - 1, y],
+          [x, y - 1],
+          [x - 1, y - 1],
+        ];
+      } else {
+        switch (orientation) {
+          case 0:
+            pieces[y][x] = character.name;
+            pieces[y - 1][x] = character.name;
+            sprites[index].coordinates = [
+              [x, y],
+              [x, y - 1],
+            ];
+            break;
+          case 1:
+            pieces[y][x] = character.name;
+            pieces[y][x + 1] = character.name;
+            sprites[index].coordinates = [
+              [x, y],
+              [x + 1, y],
+            ];
+            break;
+          case 2:
+            pieces[y][x] = character.name;
+            pieces[y + 1][x] = character.name;
+            sprites[index].coordinates = [
+              [x, y],
+              [x, y + 1],
+            ];
+            break;
+          case 3:
+            pieces[y][x] = character.name;
+            pieces[y][x - 1] = character.name;
+            sprites[index].coordinates = [
+              [x, y],
+              [x - 1, y],
+            ];
+            break;
+        }
       }
 
       state = create;

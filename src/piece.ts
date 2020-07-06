@@ -1,9 +1,26 @@
 import * as PIXI from "pixi.js";
 import "pixi-sound";
 import { app, pieces, gameTicker } from ".";
-import { LEFT_BORDER, RIGHT_BORDER, BOX_SIZE, COLUMNS, SPEED } from "./config";
-import { getCoordinates, willCollide } from "./utils";
+import {
+  LEFT_BORDER,
+  RIGHT_BORDER,
+  BOX_SIZE,
+  COLUMNS,
+  SPEED,
+  NEXT_CHARACTER_Y,
+  NEXT_CHARACTER_X,
+  OFFSET_BOTTOM,
+} from "./config";
+import {
+  getCoordinates,
+  willCollide,
+  getMichelleCoordinates,
+  getStackHeight,
+  getOffset,
+  getMichelleStackHeight,
+} from "./utils";
 import { characterData, CharacterData } from "./character-data";
+import { createMichelle } from "./michelle";
 
 export let nextCharacter: CharacterData | undefined;
 let characterList = [...characterData];
@@ -38,8 +55,8 @@ export const showNextPiece = async (file: string) => {
     }));
 
   const kasumi = new PIXI.Sprite(texture);
-  kasumi.y = 150;
-  kasumi.x = 965;
+  kasumi.y = NEXT_CHARACTER_Y;
+  kasumi.x = NEXT_CHARACTER_X;
 
   app.stage.addChild(kasumi);
   return kasumi;
@@ -50,6 +67,8 @@ export const createPiece = async (
   onDropped: (sprite: PIXI.Sprite) => void,
 ) => {
   // load the texture we need
+
+  if (file.includes("michelle")) return await createMichelle(file, onDropped);
   const texture =
     app.loader.resources[file]?.texture ??
     (await new Promise((resolve) => {
@@ -70,6 +89,13 @@ export const createPiece = async (
   // app.stage.addChild(bunny);
 
   let dropped: number | undefined = undefined;
+  let speed = SPEED;
+
+  const handleKeyUp = (event: KeyboardEvent) => {
+    if (event.key === "ArrowDown") {
+      speed = SPEED;
+    }
+  };
 
   const handleKeyPress = (event: KeyboardEvent) => {
     const { x, y } = getCoordinates(kasumi, "ceil");
@@ -93,35 +119,28 @@ export const createPiece = async (
           pressed = true;
         }
         break;
-      case "ArrowDown":
+      case "Shift":
         if (!willCollide(x, y, kasumi.rotation - Math.PI / 2)) {
           kasumi.rotation -= Math.PI / 2;
           pressed = true;
         }
         break;
+      case "Control":
+        if (!willCollide(x, y, kasumi.rotation - Math.PI / 2)) {
+          kasumi.rotation -= Math.PI / 2;
+          pressed = true;
+        }
+        break;
+      case "ArrowDown":
+        speed = SPEED * 4;
+        break;
       case " ":
-        const offset = (Math.fround(kasumi.rotation / Math.PI) * 2 + 2) % 4;
-        const stackHeight =
-          offset % 2 === 0
-            ? pieces
-                .map((row) => row[x])
-                .filter((_, index) => index > y)
-                .reverse()
-                .reduce((acc, row, index) => (row ? index + 1 : acc), 0)
-            : pieces
-                .map((row) =>
-                  offset === 1 ? [row[x], row[x + 1]] : [row[x - 1], row[x]],
-                )
-                .filter((_, index) => index > y)
-                .reverse()
-                .reduce(
-                  (acc, row, index) => (row[0] || row[1] ? index + 1 : acc),
-                  0,
-                );
+        const offset = getOffset(kasumi);
+        const stackHeight = getStackHeight(kasumi);
         kasumi.y =
           app.renderer.height -
-          (BOX_SIZE / 2 + 10) -
-          (offset === 2 ? kasumi.height / 2 : 0) -
+          (BOX_SIZE / 2 + OFFSET_BOTTOM) -
+          (offset === 2 ? BOX_SIZE : 0) -
           BOX_SIZE * stackHeight;
         break;
     }
@@ -139,6 +158,7 @@ export const createPiece = async (
   };
 
   window.addEventListener("keydown", handleKeyPress, false);
+  window.addEventListener("keyup", handleKeyUp, false);
 
   app.stage.addChild(kasumi);
 
@@ -149,36 +169,21 @@ export const createPiece = async (
   };
   const checkOffset = () => {
     // each frame we spin the bunny around a bit
-    const offset = (Math.fround(kasumi.rotation / Math.PI) * 2 + 2) % 4;
-    const { x, y } = getCoordinates(kasumi);
-    const stackHeight =
-      offset % 2 === 0
-        ? pieces
-            .map((row) => row[x])
-            .filter((_, index) => index > y)
-            .reverse()
-            .reduce((acc, row, index) => (row ? index + 1 : acc), 0)
-        : pieces
-            .map((row) =>
-              offset === 1 ? [row[x], row[x + 1]] : [row[x - 1], row[x]],
-            )
-            .filter((_, index) => index > y)
-            .reverse()
-            .reduce(
-              (acc, row, index) => (row[0] || row[1] ? index + 1 : acc),
-              0,
-            );
+    const offset = getOffset(kasumi);
+    const stackHeight = getStackHeight(kasumi);
     const dropHeight =
-      app.renderer.height - (BOX_SIZE / 2 + 10) - BOX_SIZE * stackHeight;
-    if (kasumi.y + (offset === 2 ? kasumi.height / 2 : 0) < dropHeight) {
-      kasumi.y += SPEED;
+      app.renderer.height -
+      (BOX_SIZE / 2 + OFFSET_BOTTOM) -
+      BOX_SIZE * stackHeight;
+    if (kasumi.y + (offset === 2 ? BOX_SIZE : 0) < dropHeight) {
+      kasumi.y += speed;
     } else {
       if (!dropped) {
         dropped = setTimeout(() => {
           app.loader.resources.land.sound.play({ volume: 0.5 });
           kasumi.y =
             app.renderer.height -
-            (BOX_SIZE / 2 + 10) -
+            (BOX_SIZE / 2 + OFFSET_BOTTOM) -
             (offset === 2 ? BOX_SIZE : 0) -
             BOX_SIZE * stackHeight;
           cleanup();
