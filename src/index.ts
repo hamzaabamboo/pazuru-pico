@@ -253,34 +253,55 @@ characterData.forEach((character) => {
 });
 marinaTextures.forEach((t) => app.loader.add(t));
 app.stage.sortableChildren = true;
-app.loader.add(marina);
-app.loader.add(barrelTexture);
-app.loader.add("move", move);
-app.loader.add("land", land);
-app.loader.add("gameOver", gameOver);
-app.loader.add("background", bg).load((loader, resources) => {
-  // This creates a texture from a 'bunny.png' image
-  const bg = new PIXI.Sprite(resources.background?.texture);
 
-  bg.position.x = 0;
-  bg.position.y = 0;
-
-  // Add the bunny to the scene we are building
-
-  app.stage.addChild(bg);
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() === "r" && state.name !== "end") {
-      state = start;
-    }
-  });
-
-  app.ticker.add((delta) => {
-    state(delta);
-  });
-
-  // app.stage.addChild(bunny);
+const loading = new PIXI.Text("Loading...", {
+  fontSize: 64,
+  fill: 0xffffff,
+  align: "center",
 });
+
+const updatePercent = () => {
+  loading.text = "Loading... " + Math.floor(app.loader.progress) + "%";
+};
+loading.anchor.x = 0.5;
+loading.anchor.y = 0.5;
+loading.x = app.renderer.width / 2;
+loading.y = app.renderer.height / 2;
+app.stage.addChild(loading);
+
+app.loader.onProgress.add(updatePercent);
+app.loader
+  .add(marina)
+  .add("background", bg)
+  .add(barrelTexture)
+  .add("move", move)
+  .add("land", land)
+  .add("gameOver", gameOver)
+  .load((loader, resources) => {
+    // This creates a texture from a 'bunny.png' image
+    const bg = new PIXI.Sprite(resources.background?.texture);
+
+    bg.position.x = 0;
+    bg.position.y = 0;
+
+    // app.stage.removeChild(loading);
+
+    // Add the bunny to the scene we are building
+
+    app.stage.addChild(bg);
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key.toLowerCase() === "r" && state.name !== "end") {
+        state = start;
+      }
+    });
+
+    app.ticker.add((delta) => {
+      state(delta);
+    });
+
+    // app.stage.addChild(bunny);
+  });
 
 export const updateCoordinates = (
   sprite: PIXI.Sprite,
