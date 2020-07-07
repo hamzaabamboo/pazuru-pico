@@ -1,4 +1,4 @@
-import { app, pieces, gameTicker } from ".";
+import { app, pieces, gameTicker, hammerManager } from ".";
 import {
   LEFT_BORDER,
   RIGHT_BORDER,
@@ -39,78 +39,114 @@ export const createMichelle = async (
   let dropped: number | undefined = undefined;
   let speed = SPEED;
 
+  const onMoved = () => {
+    if (dropped) {
+      clearTimeout(dropped);
+      dropped = undefined;
+    }
+    const sound = app.loader.resources.move.sound;
+    if (sound.isPlaying) {
+      sound.stop();
+    }
+    sound.play({ volume: 0.05 });
+  };
+
+  const moveLeft = () => {
+    const { x, y } = getMichelleCoordinates(michelle, "ceil");
+    if (y <= 0 && x > 0 && !pieces[0][x - 1]) {
+      michelle.x -= BOX_SIZE;
+      onMoved();
+    } else if (x > 0 && !pieces[y][x - 1] && !pieces[y + 1][x - 1]) {
+      michelle.x -= BOX_SIZE;
+      onMoved();
+    }
+  };
+
+  const moveRight = () => {
+    const { x, y } = getMichelleCoordinates(michelle, "ceil");
+    if (y <= 0 && x + 2 < COLUMNS && !pieces[0][x + 2]) {
+      michelle.x += BOX_SIZE;
+      onMoved();
+    } else if (x + 2 < COLUMNS && !pieces[y][x + 2] && !pieces[y + 1][x + 2]) {
+      michelle.x += BOX_SIZE;
+      onMoved();
+    }
+  };
+  const rotateCW = () => {
+    michelle.rotation += Math.PI / 2;
+    onMoved();
+  };
+
+  const rotateCCW = () => {
+    michelle.rotation -= Math.PI / 2;
+    onMoved();
+  };
+
+  const hardDrop = () => {
+    const stackHeight = getMichelleStackHeight(michelle);
+    michelle.y =
+      app.renderer.height - OFFSET_BOTTOM - BOX_SIZE * stackHeight - BOX_SIZE;
+    onMoved();
+  };
+
+  const handleKeyPress = (event: KeyboardEvent) => {
+    switch (event.key.toLowerCase()) {
+      case "arrowleft":
+        moveLeft();
+        break;
+      case "arrowright":
+        moveRight();
+        break;
+      case "x":
+      case "arrowup":
+        rotateCW();
+        break;
+      case "z":
+      case "control":
+        rotateCCW();
+        break;
+      case "arrowdown":
+        speed = SPEED * 4;
+        break;
+      case " ":
+        hardDrop();
+        break;
+    }
+  };
+
   const handleKeyUp = (event: KeyboardEvent) => {
     if (event.key === "ArrowDown") {
       speed = SPEED;
     }
   };
 
-  const handleKeyPress = (event: KeyboardEvent) => {
-    const { x, y } = getMichelleCoordinates(michelle, "ceil");
-    let pressed = false;
-    switch (event.key) {
-      case "ArrowLeft":
-        if (y <= 0 && x > 0 && !pieces[0][x - 1]) {
-          michelle.x -= BOX_SIZE;
-          pressed = true;
-        } else if (x > 0 && !pieces[y][x - 1] && !pieces[y + 1][x - 1]) {
-          michelle.x -= BOX_SIZE;
-          pressed = true;
-        }
-        break;
-      case "ArrowRight":
-        if (y <= 0 && x + 2 < COLUMNS && !pieces[0][x + 2]) {
-          michelle.x += BOX_SIZE;
-          pressed = true;
-        } else if (
-          x + 2 < COLUMNS &&
-          !pieces[y][x + 2] &&
-          !pieces[y + 1][x + 2]
-        ) {
-          michelle.x += BOX_SIZE;
-          pressed = true;
-        }
-        break;
-      case "ArrowUp":
-        michelle.rotation += Math.PI / 2;
-        pressed = true;
-        break;
-      case "Control":
-        michelle.rotation -= Math.PI / 2;
-        pressed = true;
-        break;
-      case "ArrowDown":
-        speed = SPEED * 4;
-        break;
-      case " ":
-        const stackHeight = getMichelleStackHeight(michelle);
-        michelle.y =
-          app.renderer.height -
-          OFFSET_BOTTOM -
-          BOX_SIZE * stackHeight -
-          BOX_SIZE;
-        break;
-    }
-    if (pressed) {
-      if (dropped) {
-        clearTimeout(dropped);
-        dropped = undefined;
-      }
-      const sound = app.loader.resources.move.sound;
-      if (sound.isPlaying) {
-        sound.stop();
-      }
-      sound.play({ volume: 0.05 });
+  const handleTap = (e: HammerInput) => {
+    if (e.center.x < window.innerWidth / 2) {
+      rotateCCW();
+    } else {
+      rotateCW();
     }
   };
 
   window.addEventListener("keydown", handleKeyPress, false);
   window.addEventListener("keyup", handleKeyUp, false);
 
+  hammerManager.on("swipeleft", moveLeft);
+  hammerManager.on("swiperight", moveRight);
+  hammerManager.on("swipedown", hardDrop);
+  hammerManager.on("tap", handleTap);
+
   app.stage.addChild(michelle);
 
   const cleanup = () => {
     window.removeEventListener("keydown", handleKeyPress, false);
+    window.removeEventListener("keyup", handleKeyUp, false);
+
+    hammerManager.off("swiperight", moveRight);
+    hammerManager.off("tap", handleTap);
+    hammerManager.off("swipeleft", moveLeft);
+    hammerManager.off("swipedown", hardDrop);
+
     gameTicker.remove(checkOffset);
     onDropped(michelle);
   };

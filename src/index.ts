@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import * as Hammer from "hammerjs";
 import "pixi-sound";
 import land from "./assets/sounds/land.mp3";
 import move from "./assets/sounds/move.mp3";
@@ -43,6 +44,10 @@ export const app = new Application({
 // The application will create a canvas element for you that you
 // can then insert into the DOM
 document.querySelector(".game")?.appendChild(app.view);
+
+export const hammerManager = new Hammer.Manager(app.view);
+hammerManager.add(new Hammer.Swipe());
+hammerManager.add(new Hammer.Tap());
 
 export let pieces: (string | null)[][] = Array(ROWS).map(() => [
   ...Array(COLUMNS).fill(null),
@@ -110,7 +115,13 @@ const end = async () => {
   }
 };
 
-const ended = () => {};
+const ended = () => {
+  const restartGame = () => {
+    state = start;
+    hammerManager.off("tap", restartGame);
+  };
+  hammerManager.on("tap", restartGame);
+};
 
 const findBottom = (sprite: SpriteData) => {
   const coordinates = sprite.coordinates;
@@ -253,7 +264,7 @@ app.loader.add("background", bg).load((loader, resources) => {
   app.stage.addChild(bg);
 
   window.addEventListener("keydown", (event) => {
-    if (event.key === "r" && state.name !== "end") {
+    if (event.key.toLowerCase() === "r" && state.name !== "end") {
       state = start;
     }
   });
