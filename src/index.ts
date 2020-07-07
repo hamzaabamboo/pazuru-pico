@@ -45,6 +45,11 @@ export const app = new Application({
 // can then insert into the DOM
 document.querySelector(".game")?.appendChild(app.view);
 
+const main = document.querySelector(".main");
+window.addEventListener("resize", () => {
+  (main as HTMLDivElement).style.height = window.innerHeight + "px";
+});
+
 export const hammerManager = new Hammer.Manager(app.view);
 hammerManager.add(new Hammer.Swipe());
 hammerManager.add(new Hammer.Tap());
