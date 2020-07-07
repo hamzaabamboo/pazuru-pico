@@ -8,8 +8,8 @@ body {
 
   font-family: sans-serif;
 
-  min-height: 100vh;
-  min-width: 100vw;
+  height: min(100vh, 100%);
+  width: 100vw;
 }
 .main {
   height: 100vh;
