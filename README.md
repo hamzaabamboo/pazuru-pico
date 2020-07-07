@@ -24,6 +24,7 @@ Match members of same group to clear the line. Don't let the board fill up becau
 - **Swipe Down** : Hard drop
 - **Tap on left half of the screen** : Rotate Counter Clockwise
 - **Tap on right half of the screen** : Rotate Clockwise
+- **Long press** : Soft drop
 
 ## Development
 
