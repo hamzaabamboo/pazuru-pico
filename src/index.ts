@@ -53,6 +53,7 @@ window.addEventListener("resize", () => {
 export const hammerManager = new Hammer.Manager(app.view);
 hammerManager.add(new Hammer.Swipe());
 hammerManager.add(new Hammer.Tap());
+hammerManager.add(new Hammer.Press());
 
 export let pieces: (string | null)[][] = Array(ROWS).map(() => [
   ...Array(COLUMNS).fill(null),

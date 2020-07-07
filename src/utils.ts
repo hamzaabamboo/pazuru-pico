@@ -52,7 +52,7 @@ export const willCollide = (
         case 1:
           return x + 1 > COLUMNS - 1 || !!pieces[y][x] || !!pieces[y][x + 1];
         case 2:
-          return !!pieces[y][x] || !!pieces[y + 1][x];
+          return y + 1 > ROWS - 1 || !!pieces[y][x] || !!pieces[y + 1][x];
         case 3:
           return x - 1 < 0 || !!pieces[y][x] || !!pieces[y][x - 1];
         default:

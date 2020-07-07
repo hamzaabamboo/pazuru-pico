@@ -201,6 +201,14 @@ export const createPiece = async (
     onMoved();
   };
 
+  const softDrop = () => {
+    speed = SPEED * 4;
+  };
+
+  const normalSpeed = () => {
+    speed = SPEED;
+  };
+
   const handleKeyPress = (event: KeyboardEvent) => {
     switch (event.key.toLowerCase()) {
       case "arrowleft":
@@ -218,7 +226,7 @@ export const createPiece = async (
         rotateCCW();
         break;
       case "arrowdown":
-        speed = SPEED * 4;
+        softDrop();
         break;
       case " ":
         hardDrop();
@@ -246,6 +254,8 @@ export const createPiece = async (
   hammerManager.on("swipeleft", moveLeft);
   hammerManager.on("swiperight", moveRight);
   hammerManager.on("swipedown", hardDrop);
+  hammerManager.on("press", softDrop);
+  hammerManager.on("pressup", normalSpeed);
   hammerManager.on("tap", handleTap);
 
   app.stage.addChild(kasumi);
@@ -258,6 +268,9 @@ export const createPiece = async (
     hammerManager.off("tap", handleTap);
     hammerManager.off("swipeleft", moveLeft);
     hammerManager.off("swipedown", hardDrop);
+    hammerManager.off("press", softDrop);
+    hammerManager.off("pressup", normalSpeed);
+
     gameTicker.remove(checkOffset);
     onDropped(kasumi);
   };
