@@ -177,7 +177,8 @@ export const createPiece = async (
   const rotateCW = () => {
     const { x, y } = getCoordinates(kasumi, "ceil");
     if (!willCollide(x, y, kasumi.rotation + Math.PI / 2)) {
-      kasumi.rotation += Math.PI / 2;
+      const offset = (getOffset(kasumi) - 1) / 2;
+      kasumi.rotation = offset * Math.PI;
       onMoved();
     }
   };
@@ -185,7 +186,8 @@ export const createPiece = async (
   const rotateCCW = () => {
     const { x, y } = getCoordinates(kasumi, "ceil");
     if (!willCollide(x, y, kasumi.rotation - Math.PI / 2)) {
-      kasumi.rotation -= Math.PI / 2;
+      const offset = (getOffset(kasumi) + 1) / 2;
+      kasumi.rotation = offset * Math.PI;
       onMoved();
     }
   };
