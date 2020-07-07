@@ -8,12 +8,22 @@ Match members of same group to clear the line. Don't let the board fill up becau
 
 ### Controls
 
+#### Keyboard
+
 - **Arrow Left/ Arrow Right** : Go Left and Right
-- **Arrow Up** : Rotate Clockwise
-- **Control** : Rotate Counter Clockwise
+- **Arrow Up, X** : Rotate Clockwise
+- **Control, Z** : Rotate Counter Clockwise
 - **Arrow Down** : Soft Drop (a.k.a drop faster)
 - **Space bar** : Hard Drop (a.k.a drop quickly)
-- **r** : Reset
+- **R** : Reset
+
+#### Mobile
+
+- **Swipe Left** : Move Left
+- **Swipe Right** : Move Right
+- **Swipe Down** : Hard drop
+- **Tap on left half of the screen** : Rotate Counter Clockwise
+- **Tap on right half of the screen** : Rotate Clockwise
 
 ## Development
 
@@ -24,6 +34,7 @@ Serve `yarn start`
 
 - [x] Basic Gameplay
 - [x] Michelle
+- [x] Mobile Control
 - [ ] Choco Coronet, Coffee & Coroquette
 - [ ] Scoring system
 - [ ] Combos
