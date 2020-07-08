@@ -159,6 +159,14 @@ export const createPiece = async (
     sound.play({ volume: 0.05 });
   };
 
+  const moveUp = () => {
+    const { x, y } = getCoordinates(kasumi, "ceil");
+    if (y >= 0 && !willCollide(x, y - 1, kasumi.rotation)) {
+      kasumi.y -= BOX_SIZE;
+      onMoved();
+    }
+  };
+
   const moveLeft = () => {
     const { x, y } = getCoordinates(kasumi, "ceil");
     if (x > 0 && !willCollide(x - 1, y, kasumi.rotation)) {
@@ -221,7 +229,12 @@ export const createPiece = async (
         break;
       case "x":
       case "arrowup":
-        rotateCW();
+        if (event.shiftKey && file.includes("kokoro")) {
+          console.log("kokoro da!");
+          moveUp();
+        } else {
+          rotateCW();
+        }
         break;
       case "z":
       case "control":
