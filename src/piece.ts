@@ -227,14 +227,13 @@ export const createPiece = async (
       case "arrowright":
         moveRight();
         break;
-      case "x":
       case "arrowup":
         if (event.shiftKey && file.includes("kokoro")) {
-          console.log("kokoro da!");
           moveUp();
-        } else {
-          rotateCW();
+          break;
         }
+      case "x":
+        rotateCW();
         break;
       case "z":
       case "control":
