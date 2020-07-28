@@ -89,27 +89,27 @@ export const characterData: CharacterData[] = [
   {
     name: "Aya",
     file: aya,
-    group: "Pastel Palletes",
+    group: "Pastel Palettes",
   },
   {
     name: "Chisato",
     file: chisato,
-    group: "Pastel Palletes",
+    group: "Pastel Palettes",
   },
   {
     name: "Maya",
     file: maya,
-    group: "Pastel Palletes",
+    group: "Pastel Palettes",
   },
   {
     name: "Eve",
     file: eve,
-    group: "Pastel Palletes",
+    group: "Pastel Palettes",
   },
   {
     name: "Hina",
     file: hina,
-    group: "Pastel Palletes",
+    group: "Pastel Palettes",
   },
   {
     name: "Kokoro",

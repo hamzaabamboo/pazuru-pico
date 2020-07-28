@@ -15,7 +15,7 @@ Match members of same group to clear the line. Don't let the board fill up becau
 - **Control, Z** : Rotate Counter Clockwise
 - **Arrow Down** : Soft Drop (a.k.a drop faster)
 - **Space bar** : Hard Drop (a.k.a drop quickly)
-- **Shift + arrow up** :
+- **Shift + arrow up** : Fly with kokoro 
 - **R** : Reset
 
 #### Mobile
@@ -39,7 +39,7 @@ Serve `yarn start`
 - [x] Mobile Control
 - [x] Kokoro god mode
 - [ ] Choco Coronet, Coffee & Coroquette
-- [ ] Scoring system
+- [ ] Scoring system (Still looking for the font and consistent scoring system)
 - [ ] Combos
 - [ ] Rimi-rin cutin
 - [ ] More sounds
