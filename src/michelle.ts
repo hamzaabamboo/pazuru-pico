@@ -1,4 +1,4 @@
-import { app, pieces, gameTicker, hammerManager } from ".";
+import { app, gameTicker, hammerManager } from ".";
 import {
   LEFT_BORDER,
   RIGHT_BORDER,
@@ -11,6 +11,7 @@ import {
 } from "./config";
 import * as PIXI from "pixi.js";
 import "pixi-sound";
+import { pieces } from "./states";
 
 export const createMichelle = async (
   file: string,
@@ -235,7 +236,6 @@ export const getMichelleCoordinates = (
 
 export const getMichelleStackHeight = (sprite: PIXI.Sprite): number => {
   const { x, y } = getMichelleCoordinates(sprite);
-  // console.log(x);
   return pieces
     .map((row) => [row[x + 1], row[x]])
     .filter((_, index) => index + 1 > y)

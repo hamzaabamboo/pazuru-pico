@@ -29,17 +29,26 @@ import moga from "./assets/chara/moga.png";
 import himari from "./assets/chara/himari.png";
 import tomoe from "./assets/chara/tomoe.png";
 
+import ksm_fall_1 from "./assets/sounds/chara/kasumi_fall_1.wav";
+
 export interface CharacterData {
   name: string;
   file: string;
   group: string;
   preview?: string;
+  sounds?: {
+    fall?: string[];
+    dropped?: string[];
+  };
 }
 export const characterData: CharacterData[] = [
   {
     name: "Kasumi",
     file: ksm,
     group: "Popipa",
+    sounds: {
+      fall: [ksm_fall_1],
+    },
   },
   {
     name: "Arisa",

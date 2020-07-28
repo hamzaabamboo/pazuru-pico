@@ -37,18 +37,28 @@ export const findClearPieces = (pieces: (string | null)[][]) => {
         )
           continue;
         ret.push([x, y]);
-        if (x - 1 >= 0 && groupMap[pieces[y][x - 1] ?? ""] === groupMap[group])
+        if (
+          x - 1 >= 0 &&
+          (groupMap[pieces[y][x - 1] ?? ""] === groupMap[group] ||
+            pieces[y][x - 1] === "Item")
+        )
           queue.push([x - 1, y]);
-        if (y - 1 >= 0 && groupMap[pieces[y - 1][x] ?? ""] === groupMap[group])
+        if (
+          y - 1 >= 0 &&
+          (groupMap[pieces[y - 1][x] ?? ""] === groupMap[group] ||
+            pieces[y - 1][x] === "Item")
+        )
           queue.push([x, y - 1]);
         if (
           x + 1 < row.length &&
-          groupMap[pieces[y][x + 1] ?? ""] === groupMap[group]
+          (groupMap[pieces[y][x + 1] ?? ""] === groupMap[group] ||
+            pieces[y][x + 1] === "Item")
         )
           queue.push([x + 1, y]);
         if (
           y + 1 < pieces.length &&
-          groupMap[pieces[y + 1][x] ?? ""] === groupMap[group]
+          (groupMap[pieces[y + 1][x] ?? ""] === groupMap[group] ||
+            pieces[y + 1][x] === "Item")
         )
           queue.push([x, y + 1]);
         visited[y][x] = true;
@@ -64,10 +74,9 @@ export const findClearPieces = (pieces: (string | null)[][]) => {
     .filter((chunk) => {
       const members = Array.from(
         new Set(chunk.map(([x, y]) => pieces[y][x] as string)),
-      );
+      ).filter((n) => n !== "Item");
       return groupMembers[groupMap[members[0]]]?.length === members.length;
     })
     .reduce((acc, curr) => (acc.length > curr.length ? acc : curr), []);
-
   return members.length > 0 ? members : undefined;
 };
