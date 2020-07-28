@@ -14,8 +14,8 @@ import {
   fly,
   fall,
 } from "./piece";
-import { COLUMNS, ROWS } from "./config";
-import { getCoordinates } from "./utils";
+import { COLUMNS, ROWS, BOX_SIZE, OFFSET_BOTTOM } from "./config";
+import { getCoordinates, getOffset } from "./utils";
 import { findClearPieces } from "./clear";
 import { createMarinaSan, marinaTextures } from "./marina";
 import { michelleFall } from "./michelle";
@@ -104,11 +104,18 @@ const end = async () => {
       await createFlyingMarina();
       const marinaFlyDown = createFallingMarina();
 
-      const moveDown = () => {
-        sprites.forEach((sp) => (sp.sprite.y += 2));
-        marinaFlyDown.y += 2;
-      };
+      const lastPieceOff = getOffset(sprites[sprites.length - 1].sprite);
+      const lastPieceCoor = getCoordinates(sprites[sprites.length - 1].sprite);
 
+      const overflow =
+        lastPieceOff === 0 ? lastPieceCoor.y - 1 : lastPieceCoor.y;
+      marinaFlyDown.y = (-1 + overflow) * BOX_SIZE + BOX_SIZE / 2;
+      const speed = overflow === -2 ? 4 : 3;
+      const moveDown = () => {
+        sprites.forEach((sp) => (sp.sprite.y += speed));
+        marinaFlyDown.y += speed;
+      };
+      const dur = overflow === -2 ? 2000 : 2000;
       app.ticker.add(moveDown);
 
       endAnimation = setTimeout(() => {
@@ -116,7 +123,7 @@ const end = async () => {
         gameOverCurtain(() => {
           state = ended;
         });
-      }, 2000);
+      }, dur);
     }
   }
 };
@@ -217,11 +224,12 @@ const create = async () => {
             Math.floor(Math.random() * character.sounds?.dropped.length)
           ]
         ].sound;
-      soundPlaying.play();
+      soundPlaying.play({
+        volume: 0.5,
+      });
     }
 
     if (y < 0 || (orientation === 0 && y <= 0)) {
-      app.stage.removeChild(sprite);
       state = end;
     } else {
       updateCoordinates(sprite, index, character);
@@ -248,7 +256,9 @@ const create = async () => {
           Math.floor(Math.random() * character.sounds?.fall.length)
         ]
       ].sound;
-    soundPlaying.play();
+    soundPlaying.play({
+      volume: 0.5,
+    });
   }
 
   if (nextCharacter?.file) {
