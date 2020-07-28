@@ -38,7 +38,7 @@ Serve `yarn start`
 - [x] Michelle
 - [x] Mobile Control
 - [x] Kokoro god mode
-- [ ] Choco Coronet, Coffee & Coroquette
+- [x] Choco Coronet, Coffee & Croquette (Missing Croquette)
 - [ ] Scoring system
 - [ ] Combos
 - [ ] Rimi-rin cutin
@@ -59,14 +59,17 @@ Feel free to contribute or contact me ! (日本語も OK)
 
 Sounds when dropping or falling can be added to [`character-data.ts`](src/character-data.ts). Each character is an object which contains name, group, image file and sound files. Files can be imported by using import statement. The data for falling and dropping sounds are array which is randomized. If anyone has sound they wants to get included, feel free to make a pull request!
 
-```json
+```js
+import ksm from "./assets/chara/kasumi.png";
+import ksm_fall_1 from "./assets/sounds/chara/kasumi_fall_1.wav";
+
 {
     name: "Kasumi",
     file: ksm,
     group: "Popipa",
     sounds: {
-        fall: [ksm_fall],
-        dropping: [ksm_dropping]
+        fall: [ksm_fall_1],
+        dropping: []
     }
 },
 ```
