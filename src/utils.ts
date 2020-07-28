@@ -1,5 +1,5 @@
 import { BOX_SIZE, LEFT_BORDER, COLUMNS, ROWS } from "./config";
-import { pieces } from ".";
+import { pieces } from "./states";
 
 export const getCoordinates = (
   sprite: PIXI.Sprite,
@@ -83,4 +83,13 @@ export const getStackHeight = (sprite: PIXI.Sprite) => {
         .filter((_, index) => index > y)
         .reverse()
         .reduce((acc, row, index) => (row[0] || row[1] ? index + 1 : acc), 0);
+};
+
+export const getMaxStackHeight = () => {
+  return pieces
+    .slice()
+    .reverse()
+    .reduce((acc, row, index) => {
+      return row.some((e) => e !== null) ? index + 1 : acc;
+    }, 0);
 };

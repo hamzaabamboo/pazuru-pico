@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import "pixi-sound";
-import { app, pieces, gameTicker, hammerManager } from ".";
+import { app, gameTicker, hammerManager } from ".";
 import {
   LEFT_BORDER,
   RIGHT_BORDER,
@@ -78,10 +78,12 @@ export const fall = (
   gameTicker.add(checkOffset);
 };
 export const initRNG = () => {
-  nextCharacter = undefined;
   characterList = [...characterData];
+  nextCharacter = randomCharacter();
+  console.log(characterList.length);
 };
 export const randomCharacter = (): CharacterData => {
+  console.log(characterList.length);
   if (characterList.length < 1) {
     characterList = [...characterData];
   }
@@ -89,12 +91,13 @@ export const randomCharacter = (): CharacterData => {
   if (!nextCharacter) {
     res = characterList[Math.floor(Math.random() * characterList.length)];
     characterList = characterList.filter((e) => e.name !== res?.name);
+    return res;
   } else {
     res = { ...nextCharacter };
+    nextCharacter =
+      characterList[Math.floor(Math.random() * characterList.length)];
+    characterList = characterList.filter((e) => e.name !== nextCharacter?.name);
   }
-  nextCharacter =
-    characterList[Math.floor(Math.random() * characterList.length)];
-  characterList = characterList.filter((e) => e.name !== nextCharacter?.name);
   return res;
 };
 
@@ -232,6 +235,8 @@ export const createPiece = async (
           moveUp();
           break;
         }
+        rotateCW();
+        break;
       case "x":
         rotateCW();
         break;

@@ -173,3 +173,5 @@ crashlytics-build.properties
 /lib
 /.cache/
 /dist/
+
+*.m4a
