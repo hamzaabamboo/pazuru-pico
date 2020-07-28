@@ -198,17 +198,28 @@ const clearChunk = async (chunk: [number, number][]) => {
 
 let nextPiece: PIXI.Sprite;
 
+let soundPlaying: PIXI.sound.Sound;
+
 const create = async () => {
   const character = randomCharacter();
   const index = sprites.length;
   const piece = await createPiece(character.file, (sprite) => {
     const { y } = getCoordinates(sprite);
     const orientation = (Math.fround(sprite.rotation / Math.PI) * 2 + 2) % 4;
-    // console.log(
-    //   x,
-    //   y,
-    //   pieces.map((e) => e.map((e) => e ?? ".").join(" ")).join("\n"),
-    // );
+
+    if (character.sounds?.dropped) {
+      if (soundPlaying?.isPlaying) {
+        soundPlaying.destroy();
+      }
+      soundPlaying =
+        app.loader.resources[
+          character.sounds.dropped[
+            Math.floor(Math.random() * character.sounds?.dropped.length)
+          ]
+        ].sound;
+      soundPlaying.play();
+    }
+
     if (y < 0 || (orientation === 0 && y <= 0)) {
       app.stage.removeChild(sprite);
       state = end;
@@ -226,6 +237,19 @@ const create = async () => {
       });
     }
   });
+
+  if (character.sounds?.fall) {
+    if (soundPlaying?.isPlaying) {
+      soundPlaying.destroy();
+    }
+    soundPlaying =
+      app.loader.resources[
+        character.sounds.fall[
+          Math.floor(Math.random() * character.sounds?.fall.length)
+        ]
+      ].sound;
+    soundPlaying.play();
+  }
 
   if (nextCharacter?.file) {
     if (nextPiece) {
@@ -249,6 +273,10 @@ characterData.forEach((character) => {
   app.loader.add(character.file);
   if (character.preview) {
     app.loader.add(character.preview);
+  }
+  if (character.sounds) {
+    character.sounds?.dropped?.forEach((sound) => app.loader.add(sound));
+    character.sounds?.fall?.forEach((sound) => app.loader.add(sound));
   }
 });
 marinaTextures.forEach((t) => app.loader.add(t));
