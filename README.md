@@ -2,6 +2,8 @@
 
 Puyo-puyo-ish game inspired from [BanG Dream! Girls Band Party!☆PICO ～ OHMORI ～ Episode 9](https://www.youtube.com/watch?v=q5YETLAebUY). Created with PixiJS and TypeScript
 
+\*\* Internet Explorer is not supported \*\*
+
 ## How To Play ?
 
 Match members of same group to clear the line. Don't let the board fill up because Marina-san will come for you !

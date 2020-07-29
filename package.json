@@ -34,12 +34,5 @@
     "pixi-sound": "^3.0.4",
     "pixi.js": "^5.3.0"
   },
-  "browserslist": [
-    "edge >= 16",
-    "safari >= 9",
-    "firefox >= 57",
-    "ie >= 11",
-    "ios >= 9",
-    "chrome >= 49"
-  ]
+  "browserslist": ">0.25%, ie 11, not op_mini all"
 }
