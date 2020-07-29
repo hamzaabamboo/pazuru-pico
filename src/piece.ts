@@ -23,7 +23,7 @@ import { characterData, CharacterData } from "./character-data";
 import { createMichelle } from "./michelle";
 
 export let nextCharacter: CharacterData | undefined;
-let characterList = [...characterData];
+let characterList: CharacterData[] = [];
 
 export const fly = (
   sprite: PIXI.Sprite,
@@ -79,24 +79,33 @@ export const fall = (
 };
 export const initRNG = () => {
   characterList = [...characterData];
-  nextCharacter = randomCharacter();
-  console.log(characterList.length);
+  nextCharacter = characterList.splice(
+    Math.floor(Math.random() * characterList.length),
+    1,
+  )[0];
+  console.log(
+    "initcalled",
+    characterList.length,
+    characterList.map((c) => c.name),
+  );
 };
 export const randomCharacter = (): CharacterData => {
-  console.log(characterList.length);
-  if (characterList.length < 1) {
+  if (characterList.length === 0) {
     characterList = [...characterData];
   }
   let res: CharacterData;
   if (!nextCharacter) {
-    res = characterList[Math.floor(Math.random() * characterList.length)];
-    characterList = characterList.filter((e) => e.name !== res?.name);
+    res = characterList.splice(
+      Math.floor(Math.random() * characterList.length),
+      1,
+    )[0];
     return res;
   } else {
     res = { ...nextCharacter };
-    nextCharacter =
-      characterList[Math.floor(Math.random() * characterList.length)];
-    characterList = characterList.filter((e) => e.name !== nextCharacter?.name);
+    nextCharacter = characterList.splice(
+      Math.floor(Math.random() * characterList.length),
+      1,
+    )[0];
   }
   return res;
 };
