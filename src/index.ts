@@ -1,3 +1,4 @@
+import "./polyfills";
 import * as PIXI from "pixi.js";
 import * as Hammer from "hammerjs";
 import "pixi-sound";
