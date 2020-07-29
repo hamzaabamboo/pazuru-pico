@@ -1,9 +1,12 @@
 import { ROWS, COLUMNS } from "./config";
 import { characterData } from "./character-data";
 
-const groupMap = Object.fromEntries(
-  characterData.map((e) => [e.name, e.group]),
-);
+const groupMap = characterData
+  .map((e) => [e.name, e.group])
+  .reduce((obj, [key, val]) => {
+    obj[key] = val;
+    return obj;
+  }, {} as { [name: string]: string });
 
 const groupMembers = characterData.reduce((acc, curr) => {
   return {
