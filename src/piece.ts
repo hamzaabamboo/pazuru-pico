@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from "pixi.js-legacy";
 import "pixi-sound";
 import { app, gameTicker, hammerManager } from ".";
 import {

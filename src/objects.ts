@@ -1,5 +1,5 @@
 import { app } from ".";
-import * as PIXI from "pixi.js";
+import * as PIXI from "pixi.js-legacy";
 import barrelTexture from "./assets/objects/barrel.png";
 import { MARINA_X, MARINA_Y } from "./config";
 

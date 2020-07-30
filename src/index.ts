@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from "pixi.js-legacy";
 import * as Hammer from "hammerjs";
 import "pixi-sound";
 import land from "./assets/sounds/land.mp3";

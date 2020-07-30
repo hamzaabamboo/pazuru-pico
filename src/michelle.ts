@@ -9,7 +9,7 @@ import {
   FALL_DELAY,
   FALL_SPEED,
 } from "./config";
-import * as PIXI from "pixi.js";
+import * as PIXI from "pixi.js-legacy";
 import "pixi-sound";
 import { pieces } from "./states";
 
