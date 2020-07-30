@@ -83,11 +83,6 @@ export const initRNG = () => {
     Math.floor(Math.random() * characterList.length),
     1,
   )[0];
-  console.log(
-    "initcalled",
-    characterList.length,
-    characterList.map((c) => c.name),
-  );
 };
 export const randomCharacter = (): CharacterData => {
   if (characterList.length === 0) {
