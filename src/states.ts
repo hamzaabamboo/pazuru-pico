@@ -362,7 +362,9 @@ const clearChunk = async (chunk: [number, number][]) => {
   const toRemove = sprites.filter((sprite) => {
     return (
       sprite.coordinates &&
-      chunk.find((e) => sprite.coordinates?.[0].join(",") === e.join(","))
+      chunk.find((e) =>
+        sprite.coordinates?.find((c) => c.join(",") === e.join(",")),
+      )
     );
   });
   toRemove.forEach((sp) => {
