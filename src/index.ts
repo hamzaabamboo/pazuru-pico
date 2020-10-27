@@ -4,6 +4,7 @@ import "pixi-sound";
 import land from "./assets/sounds/land.mp3";
 import move from "./assets/sounds/move.mp3";
 import bg from "./assets/bg.png";
+import { bandData } from "./band-data";
 import { characterData } from "./character-data";
 import { marinaTextures } from "./marina";
 import gameOver from "./assets/gameOver.png";
@@ -48,6 +49,7 @@ export const setState = (nextState: typeof state) => {
   state = nextState;
 };
 
+
 // load the texture we need
 characterData.forEach((character) => {
   app.loader.add(character.file);
@@ -58,6 +60,11 @@ characterData.forEach((character) => {
     character.sounds?.dropped?.forEach((sound) => app.loader.add(sound));
     character.sounds?.fall?.forEach((sound) => app.loader.add(sound));
   }
+});
+bandData.forEach((band)=>{
+  app.loader.add(band.sounds);
+  // if(band.sounds)
+  //   band.sounds?.forEach((sound)=>app.loader.add(sound));
 });
 items.forEach((img) => {
   app.loader.add(img);
@@ -87,7 +94,7 @@ app.loader
   .add("move", move)
   .add("land", land)
   .add("gameOver", gameOver)
-  .load((loader, resources) => {
+  .load((_loader, resources) => {
     const bg = new PIXI.Sprite(resources.background?.texture);
 
     bg.position.x = 0;

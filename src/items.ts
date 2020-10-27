@@ -1,12 +1,13 @@
 import * as PIXI from "pixi.js-legacy";
 import "pixi-sound";
 import { app, gameTicker } from ".";
-import { LEFT_BORDER, BOX_SIZE, SPEED, OFFSET_BOTTOM } from "./config";
+import { BOX_SIZE, LEFT_BORDER, OFFSET_BOTTOM, SPEED } from "./config";
 import { getStackHeight } from "./utils";
 import coffee from "./assets/objects/coffee.png";
 import coronet from "./assets/objects/coronet.png";
+import croquette from "./assets/objects/croquette.png";
 
-export const items = [coffee, coronet];
+export const items = [coffee, coronet, croquette];
 
 export const fallItem = (
   item: PIXI.Sprite,
