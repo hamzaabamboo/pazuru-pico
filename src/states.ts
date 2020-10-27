@@ -165,7 +165,7 @@ const create = async () => {
 
     if (character.sounds?.fall) {
       if (soundPlaying?.isPlaying) {
-        soundPlaying.destroy();
+        //soundPlaying.destroy();
       }
       soundPlaying =
         app.loader.resources[
