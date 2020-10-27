@@ -1,14 +1,5 @@
 import { app, gameTicker, hammerManager } from ".";
-import {
-  LEFT_BORDER,
-  RIGHT_BORDER,
-  BOX_SIZE,
-  SPEED,
-  COLUMNS,
-  OFFSET_BOTTOM,
-  FALL_DELAY,
-  FALL_SPEED,
-} from "./config";
+import { BOX_SIZE, COLUMNS, FALL_DELAY, FALL_SPEED, LEFT_BORDER, OFFSET_BOTTOM, RIGHT_BORDER, SPEED } from "./config";
 import * as PIXI from "pixi.js-legacy";
 import "pixi-sound";
 import { pieces } from "./states";
@@ -173,7 +164,7 @@ export const createMichelle = async (
     } else {
       if (!dropped) {
         dropped = setTimeout(() => {
-          app.loader.resources.land.sound.play({ volume: 0.5 });
+          app.loader.resources.land.sound.play({ volume: 0.4 });
           michelle.y =
             app.renderer.height -
             OFFSET_BOTTOM -

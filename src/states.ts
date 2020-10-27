@@ -1,26 +1,13 @@
 import { app, gameTicker, hammerManager, resetGameTicker, setState } from ".";
-import {
-  createMarinaSan,
-  marinaFlyDown,
-  createFlyingMarina,
-  createFallingMarina,
-} from "./marina";
-import { barrel, curtain, createBarrel, gameOverCurtain } from "./objects";
-import { ROWS, COLUMNS, BOX_SIZE, LEFT_BORDER } from "./config";
-import {
-  initRNG,
-  nextCharacter,
-  randomCharacter,
-  fly,
-  createPiece,
-  showNextPiece,
-  fall,
-} from "./piece";
-import { getOffset, getCoordinates, getMaxStackHeight } from "./utils";
+import { createFallingMarina, createFlyingMarina, createMarinaSan, marinaFlyDown } from "./marina";
+import { barrel, createBarrel, curtain, gameOverCurtain } from "./objects";
+import { BOX_SIZE, COLUMNS, LEFT_BORDER, ROWS } from "./config";
+import { createPiece, fall, fly, initRNG, nextCharacter, randomCharacter, showNextPiece } from "./piece";
+import { getCoordinates, getMaxStackHeight, getOffset } from "./utils";
 import { CharacterData } from "./character-data";
 import { findClearPieces } from "./clear";
 import { michelleFall } from "./michelle";
-import { createItem, items, fallItem } from "./items";
+import { createItem, fallItem, items } from "./items";
 
 interface SpriteData {
   sprite: PIXI.Sprite;
@@ -140,7 +127,7 @@ const create = async () => {
             ]
           ].sound;
         soundPlaying.play({
-          volume: 0.5,
+          volume: 0.4,
         });
       }
 
@@ -171,7 +158,7 @@ const create = async () => {
         }
 
         const piece = await createPiece(character.file, onDropped);
-
+0.
         sprites.push({ sprite: piece, character });
       });
     }
@@ -187,7 +174,7 @@ const create = async () => {
           ]
         ].sound;
       soundPlaying.play({
-        volume: 0.5,
+        volume: 0.4,
       });
     }
   }
